@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+</head>
+<style>
+body{
+    background-color: #0f121f;
+    background-image: url(/static/stars.png);
+    /* background-repeat-y: no-repeat; */
+    color: #fff;
+}
+
+body *{
+    font-family: Ubuntu;
+}
+
+h1, h2, h3, h4, h5{
+    font-weight: normal;
+    margin: 0;
+}
+
+a, a:hover, a:visited{
+    color: #fff;
+    text-decoration: none;
+}
+
+.button2 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+    padding: 12px 28px;
+    border-radius: 12px;
+  }
+  
+  .button2:hover {
+    background-color: #008CBA;
+    color: white;
+  }
+
+  .button1 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+    padding: 12px 28px;
+    border-radius: 12px;
+  }
+
+
+</style>
+<body>
+    <h1> Image to OCR Converter</h1> <br>
+    <h2> Upload Image</h2> <br>
+    
+    <form id = "myForm"  enctype="multipart/form-data">
+        <div>
+        <input type="file" name="image">
+        </div>
+        <div>
+        <br>
+        <input class = "button2" type="submit" value="Upload">
+        </div>
+    </form>
+</body>
+</html>
+
+<script>
+    
+    const myForm = document.getElementById('myForm')
+    var x
+    myForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+            fetch("{{lambda_api}}", {
+                method: 'post',
+                body: formData
+            }).then(function(response) {
+                return response.json()
+            }).then(function(json){
+                x=json['key']
+                console.log(x)
+                window.location.replace("http://localhost:8000/api/data/"+x.toString())
+            })
+
+        })
+
+</script>
